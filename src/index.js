@@ -16,13 +16,80 @@ dns.setServers(["8.8.8.8", "8.8.4.4"]);
 
 connectDB()
   .then(() => {
-    console.log("Database connectivity test successful!");
-    process.exit(0);
+    app.listen(process.env.PORT || 8000, () => {
+      console.log(`Server is Running on Port ${process.env.PORT}`);
+      
+    })
   })
   .catch((error) => {
     console.error("Database connectivity test failed:", error);
     process.exit(1);
   });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // import express from 'express'
 // const app = express();
