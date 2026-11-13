@@ -58,12 +58,11 @@ const userSchema = new Schema(
   },
 );
 
-// Password hashing before saving
-userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) return next();
+// Hash password before saving
+userSchema.pre("save", async function () {
+  if (!this.isModified("password")) return;
 
   this.password = await bcrypt.hash(this.password, 10);
-  next();
 });
 
 // Check password

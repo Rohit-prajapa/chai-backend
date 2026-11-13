@@ -1,7 +1,7 @@
 import mongoose, { isValidObjectId } from "mongoose";
 
-import { Like } from "../models/like.model.js";
-import { Video } from "../models/video.model.js";
+import { Like } from "../models/like.models.js";
+import { Video } from "../models/video.models.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
@@ -26,24 +26,32 @@ const toggleVideoLike = asyncHandler(async (req, res) => {
     likedBy: userId,
   });
 
+  let isLiked;
+
   if (existingLike) {
     await Like.findByIdAndDelete(existingLike._id);
-
-    return res
-      .status(200)
-      .json(
-        new ApiResponse(200, { isLiked: false }, "Video unliked successfully"),
-      );
+    isLiked = false;
+  } else {
+    await Like.create({
+      video: videoId,
+      likedBy: userId,
+    });
+    isLiked = true;
   }
 
-  await Like.create({
+  const likeCount = await Like.countDocuments({
     video: videoId,
-    likedBy: userId,
   });
 
   return res
     .status(200)
-    .json(new ApiResponse(200, { isLiked: true }, "Video liked successfully"));
+    .json(
+      new ApiResponse(
+        200,
+        { isLiked, likeCount },
+        isLiked ? "Video liked successfully" : "Video unliked successfully",
+      ),
+    );
 });
 
 // 2. Toggle Comment Like
