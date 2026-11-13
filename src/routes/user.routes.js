@@ -1,4 +1,5 @@
 import { Router } from "express";
+
 import {
   loginUser,
   logoutUser,
@@ -29,7 +30,7 @@ router.route("/register").post(
 // User Login Route
 router.route("/login").post(loginUser);
 
-// User Logout Route
+// User Logout Route (JWT Protected)
 router.route("/logout").post(verifyJWT, logoutUser);
 
 // Refresh Access Token Route
